@@ -1,5 +1,5 @@
 import turtle
-import sys
+import time
 
 screen = turtle.Screen()
 turtle = turtle.Turtle()
@@ -20,4 +20,6 @@ def setpose(x,y,angle):            #set a new pose for turtlebot
 
 
 for i in range(100):
+	now=time.time()
 	drive(5,0)
+	print("function call time= ",time.time()-now)

@@ -21,7 +21,9 @@ end
 object turtlebot
 	function void drive(single move_speed, single turn_speed)
 	function void setpose(pose desire_pose)
+	function void setpose_relative(pose desire_pose)
 	function void setpencolor(string color)
+	function void clear_screen()
 	property pose turtle_pose
 
 end object
@@ -50,9 +52,13 @@ class create_impl:
 
 
 	def setpose(self,desire_pose):            #set a new pose for turtlebot
-
+		self.tkt(self.turtle.penup)
 		self.tkt(self.turtle.setpos,desire_pose.x,desire_pose.y)
 		self.tkt(self.turtle.seth,desire_pose.angle)
+	def setpose_relative(self,desire_pose):   #set a new relative pose for turtlebot
+		self.tkt(self.turtle.penup)
+		self.tkt(self.turtle.setpos,self.turtle_pose.x+desire_pose.x,self.turtle_pose.y+desire_pose.y)
+		self.tkt(self.turtle.seth,self.turtle_pose.angle+desire_pose.angle)
 	def getpose(self):
 		while self._running:
 			try:
@@ -61,16 +67,21 @@ class create_impl:
 			except:
 				traceback.print_exc()
 
-	def run(self,func):
-	    threading.Thread(target=func).start()
-
-
 	def setpencolor(self,color):
 		if color=="none":
 			self.tkt(self.turtle.penup)
 			return
 		self.tkt(self.turtle.pendown)
 		self.tkt(self.turtle.pencolor,color)
+
+	def clear_screen(self):
+		self.tkt(self.turtle.clear)
+
+
+	def run(self,func):
+	    threading.Thread(target=func).start()
+
+
 	#background thread updating pose property
 	def start(self):
 		self._running=True

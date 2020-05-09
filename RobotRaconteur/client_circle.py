@@ -9,26 +9,26 @@ pose=obj.turtle_pose
 i=0
 
 def drawR(obj):
-	for i in range(40):
-		obj.drive(5,0)
+	obj.drive(200,0)
 	now=time.time()
 	obj.drive(0,-90)
 	print("function call time= ",time.time()-now)
-	for i in range(30):
-		obj.drive(6,-6.2)
+	for i in range(21):
+		obj.drive(9,-9)
 	obj.drive(0,140)
-	for i in range(25):
-		obj.drive(5,0)
+	obj.drive(120,0)
 
-
-obj.setpencolor("red")
-pose.angle=90
-obj.setpose(pose)
-drawR(obj)
-obj.setpencolor("none")
-pose.x=30
-pose.y=0
-obj.setpose(pose)
-obj.setpencolor("green")
-drawR(obj)
+while True:
+	pose.x=0
+	pose.y=0
+	pose.angle=90
+	obj.setpose(pose)
+	obj.setpencolor("red")
+	drawR(obj)
+	pose.x=30
+	pose.y=0
+	obj.setpose(pose)
+	obj.setpencolor("green")
+	drawR(obj)
+	obj.clear_screen()
 
