@@ -21,6 +21,7 @@ end
 object turtlebot
 	function void drive(single move_speed, single turn_speed)
 	function void setpose(pose desire_pose)
+	function void setpencolor(string color)
 	property pose turtle_pose
 
 end object
@@ -42,13 +43,16 @@ class create_impl:
 		self.turtle_pose=RRN.NewStructure("experimental.turtlebot_create.pose")
 
 	def drive(self,move_speed,turn_speed):            #Drive function, update new position, this is the one referred in definition
-		self.run(lambda: self.tkt(self.turtle.forward,move_speed))
-		self.run(lambda: self.tkt(self.turtle.left,turn_speed))
+		# self.run(lambda: self.tkt(self.turtle.forward,move_speed))
+		# self.run(lambda: self.tkt(self.turtle.left,turn_speed))
+		self.tkt(self.turtle.forward,move_speed)
+		self.tkt(self.turtle.left,turn_speed)
+
 
 	def setpose(self,desire_pose):            #set a new pose for turtlebot
 
-		self.turtle.setpos(desire_pose.x,desire_pose.y)
-		self.turtle.seth(desire_pose.angle)
+		self.tkt(self.turtle.setpos,desire_pose.x,desire_pose.y)
+		self.tkt(self.turtle.seth,desire_pose.angle)
 	def getpose(self):
 		while self._running:
 			try:
@@ -60,6 +64,14 @@ class create_impl:
 	def run(self,func):
 	    threading.Thread(target=func).start()
 
+
+	def setpencolor(self,color):
+		if color=="none":
+			self.tkt(self.turtle.penup)
+			return
+		self.tkt(self.turtle.pendown)
+		self.tkt(self.turtle.pencolor,color)
+	#background thread updating pose property
 	def start(self):
 		self._running=True
 		self._pose = threading.Thread(target=self.getpose)
