@@ -33,22 +33,22 @@ def loop(obj):
 
         # drive left
         if keys[pygame.K_LEFT]:
-            obj.drive(0,5)			####Drive left
+            obj.drive("turtle1",0,5)			####Drive left
             screen.blit(dpad_l, (0,0))
 
         # drive right
         if keys[pygame.K_RIGHT]:
-            obj.drive(0,-5)			####Drive right
+            obj.drive("turtle1",0,-5)			####Drive right
             screen.blit(dpad_r, (0,0))
 
         # drive forward
         if keys[pygame.K_UP]:
-            obj.drive(5,0)			####Drive up
+            obj.drive("turtle1",5,0)			####Drive up
             screen.blit(dpad_f, (0,0))
 
         # drive backwards
         if keys[pygame.K_DOWN]:
-            obj.drive(-5,0)			####Drive down
+            obj.drive("turtle1",-5,0)			####Drive down
             screen.blit(dpad_b, (0,0))
 
 
@@ -70,13 +70,10 @@ def loop(obj):
         pygame.display.flip()
 
 
-        time.sleep(0.03)
+        # time.sleep(0.03)
 
         # obtain next key list
         pygame.event.pump()
-
-        print("turtle position: ",obj.turtle_pose.x,obj.turtle_pose.y)
-        print("turtle orientation: ",obj.turtle_pose.angle)
 
 
 # prepare size and rotations of dpad and dpad_pressed
