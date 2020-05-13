@@ -63,11 +63,14 @@ class create_impl:
 		self.pose=self.getpose(turtlename)
 		self.tkt(self.dict[turtlename].setpos,self.pose.x+desire_pose.x,self.pose.y+desire_pose.y)
 		self.tkt(self.dict[turtlename].seth,self.pose.angle+desire_pose.angle)
+
+	#return the pose of turtlebot
 	def getpose(self,turtlename):
 		(self.pose.x,self.pose.y)=self.dict[turtlename].pos()
 		self.pose.angle=self.dict[turtlename].heading()
 		return self.pose
 
+	#set the pen color of turtlebot
 	def setpencolor(self,turtlename,color):
 		if color=="none":
 			self.tkt(self.dict[turtlename].penup)
@@ -75,8 +78,11 @@ class create_impl:
 		self.tkt(self.dict[turtlename].pendown)
 		self.tkt(self.dict[turtlename].pencolor,color)
 
+
+	#reset the screen
 	def reset(self):
 		self.tkt(self.screen.reset)
+	#spawn a new turtlebot
 	def spawn(self,desire_pose):
 		name="turtle"+str(len(self.dict)+1)
 		self.dict[name]=self.tkt(turtle.Turtle)
@@ -84,8 +90,9 @@ class create_impl:
 		self.setpose(name,desire_pose)
 		self.turtle_namelist.append(name)
 		return name
+	#delete one turtlebot
 	def delete(self,turtlename):
-		# self.tkt(turtle.clearscreen)
+		self.tkt(self.dict[turtlename].clear)
 		del self.dict[turtlename]
 
 
