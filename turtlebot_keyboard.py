@@ -79,7 +79,7 @@ def prepare_dpad():
     file_dir = os.path.dirname(__file__)
     file_dir = (file_dir + "/") if  (file_dir) else ""
 
-    dpad = pygame.image.load(file_dir + "images/d-pad.png")
+    dpad = pygame.image.load(file_dir + "images/dpad.png")
     dpad = pygame.transform.scale(dpad, (screen_size, screen_size))
     dpad_pressed = pygame.image.load(file_dir + "images/d-pad-pressed.png")
     dpad_pressed = pygame.transform.scale(dpad_pressed, (screen_size, screen_size))
