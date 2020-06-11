@@ -27,9 +27,12 @@ while True:
 	drawR("turtle1",obj)
 	pose.x=30
 	pose.y=0
-	turtlename=obj.spawn(pose)
-	obj.setpencolor(turtlename,"green")
-	drawR(turtlename,obj)
+	obj.setpose("turtle1",pose)
+	obj.setpencolor("turtle1","green")
+	drawR("turtle1",obj)
+	# turtlename=obj.spawn(pose)
+	# obj.setpencolor(turtlename,"green")
+	# drawR(turtlename,obj)
 	obj.reset()
-	obj.delete(turtlename)
+	# obj.delete(turtlename)
 

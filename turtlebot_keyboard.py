@@ -69,9 +69,6 @@ def loop(obj):
         # refresh screen
         pygame.display.flip()
 
-
-        # time.sleep(0.03)
-
         # obtain next key list
         pygame.event.pump()
 
@@ -91,21 +88,6 @@ def prepare_dpad():
     dpad_b = pygame.transform.rotate(dpad_pressed, 180)
     dpad_l = pygame.transform.rotate(dpad_pressed, 90)
 
-# Hint which is print at startup in console
-def print_hint():
-    print("\n\n\n")
-    print("Virtual Joystick for your Duckiebot")
-    print("-----------------------------------")
-    print("\n")
-    print("[ARROW_KEYS]:    Use them to steer your Duckiebot")
-    print("         [q]:    Quit the program")
-    print("         [a]:    Start lane-following a.k.a. autopilot")
-    print("         [s]:    Stop lane-following")
-    print("         [i]:    Toggle anti-instagram")
-    print("\n")
-    print("Questions? Contact Julien Kindle: jkindle@ethz.ch")
-
-
 
 if __name__ == '__main__':
 
@@ -121,10 +103,9 @@ if __name__ == '__main__':
 
 
     prepare_dpad()
-    print_hint()
+    print("Use Arrow Keys to Control")
 
     #Connect to RR service
     url='rr+tcp://localhost:22222/?service=Turtlebot_Service'
     obj=RRN.ConnectService(url)
-    # obj.drive(5,0)
     loop(obj)
