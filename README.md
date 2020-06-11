@@ -30,8 +30,8 @@ struct pose                   #pose structure
     field single angle
 end
 object turtlesim
-  #drive the turtle
-	function void drive(string turtlename,single move_speed, single turn_speed)
+  	#drive the turtle
+  function void drive(string turtlename,single move_speed, single turn_speed)
 	#teleport the turtle in absolute coordinates
   function void setpose(string turtlename,pose desire_pose)
 	#teleport the turtle in relative coordinates
