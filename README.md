@@ -5,23 +5,23 @@ Honglu He
 ## Prerequisite:
 ### python3.7
 ### tkthread:
-`pip install tkthread`
+`pip3 install tkthread`
 ### tcl-thread:
 #### Ubuntu:
 `sudo apt-get install tcl-thread`
 #### Windows:
 Move folder *thread2.8.4* to *C:\<YourPythonInstallationDir>\tcl\tcl8.6*
 ### pygame:
-`pip install pygame`
+`pip3 install pygame`
 
 ## Usages:
 ### Start RR Service:
-`python turtlebot_service.py`
+`python3 turtlebot_service.py`
 ### Start RR Client:
 #### Draw an 'R': 
-`python client_R.py`
+`python3 client_R.py`
 #### Keyboard Control: 
-`python turtlebot_keyboard.py`
+`python3 turtlebot_keyboard.py`
 
 ## Service Definition:
 ```
