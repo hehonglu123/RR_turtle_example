@@ -42,9 +42,6 @@ class create_impl:
 		self.dict["turtle1"].shape("turtle")
 		#tkthread initialization
 		self.tkt = TkThread(self.screen._root)  # make the thread-safe callable
-		#RR background thread initialization
-		self._lock=threading.RLock()
-		self._running=False
 		#RR property
 		self.pose=RRN.NewStructure("experimental.turtlebot_create.pose")
 		self.turtle_namelist=["turtle1"]
