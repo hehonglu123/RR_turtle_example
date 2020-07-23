@@ -1,0 +1,33 @@
+service experimental.turtlebot_create
+
+stdver 0.9
+
+struct pose
+    field double x
+    field double y
+    field double angle
+end
+struct turtle
+	field string name
+	field pose turtle_pose
+	field string color
+end
+struct distance
+	field string name
+	field double[] direction
+	field double d
+end
+
+object turtlesim
+	function void drive(string turtle_name, double move_speed, double turn_speed)
+	property turtle{list} turtles
+	wire turtle{list} turtles_wire [readonly]
+	property bool turtle_change
+	function void add_turtle(string turtle_name)
+	function void remove_turtle(string turtle_name)
+	function void setpose(string turtle_name,pose desire_pose)
+	function void setcolor(string turtle_name, string color)
+	property string{list} map
+	wire distance{list} distance_report_wire [readonly]
+
+end object
