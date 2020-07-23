@@ -2,8 +2,10 @@
 ![](images/turtle.gif)
 
 ## Prerequisite:
-### python3
-### RobotRaconteur
+* Ubuntu 18.04
+* python/python3
+* [RobotRaconteur](https://github.com/robotraconteur/robotraconteur/wiki/Download)
+* [ROS Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu)
 
 ## Usages:
 ### Start RR Service:
