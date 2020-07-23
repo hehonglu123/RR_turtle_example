@@ -2,7 +2,6 @@
 ![](images/turtle.gif)
 
 ## Prerequisite:
-* Ubuntu 18.04
 * python/python3
 * [RobotRaconteur](https://github.com/robotraconteur/robotraconteur/wiki/Download)
 
@@ -43,6 +42,7 @@ end object
 # ROS turtle module example
 
 ## Prerequisite:
+* Ubuntu 18.04
 * python or python3
 * [ROS Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu)
 
