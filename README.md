@@ -5,7 +5,6 @@
 * Ubuntu 18.04
 * python/python3
 * [RobotRaconteur](https://github.com/robotraconteur/robotraconteur/wiki/Download)
-* [ROS Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu)
 
 ## Usages:
 ### Start RR Service:
@@ -44,8 +43,8 @@ end object
 # ROS turtle module example
 
 ## Prerequisite:
-### python or python3
-### ROS
+* python or python3
+* [ROS Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu)
 
 ## Setup:
 ```
