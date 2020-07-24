@@ -67,14 +67,14 @@ set(python_turtle_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(python_turtle_SOURCE_PREFIX /home/iamnotedible/Desktop/RR_turtle_reverse/ROS/src/python_turtle)
-  set(python_turtle_DEVEL_PREFIX /home/iamnotedible/Desktop/RR_turtle_reverse/ROS/devel)
+  set(python_turtle_SOURCE_PREFIX /home/iamnotedible/RR_turtle_example/ROS/src/python_turtle)
+  set(python_turtle_DEVEL_PREFIX /home/iamnotedible/RR_turtle_example/ROS/devel)
   set(python_turtle_INSTALL_PREFIX "")
   set(python_turtle_PREFIX ${python_turtle_DEVEL_PREFIX})
 else()
   set(python_turtle_SOURCE_PREFIX "")
   set(python_turtle_DEVEL_PREFIX "")
-  set(python_turtle_INSTALL_PREFIX /home/iamnotedible/Desktop/RR_turtle_reverse/ROS/install)
+  set(python_turtle_INSTALL_PREFIX /home/iamnotedible/RR_turtle_example/ROS/install)
   set(python_turtle_PREFIX ${python_turtle_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(python_turtle_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/iamnotedible/Desktop/RR_turtle_reverse/ROS/devel/include " STREQUAL " ")
+if(NOT "/home/iamnotedible/RR_turtle_example/ROS/devel/include " STREQUAL " ")
   set(python_turtle_INCLUDE_DIRS "")
-  set(_include_dirs "/home/iamnotedible/Desktop/RR_turtle_reverse/ROS/devel/include")
+  set(_include_dirs "/home/iamnotedible/RR_turtle_example/ROS/devel/include")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/iamnotedible/Desktop/RR_turtle_reverse/ROS/devel/include " STREQUA
         message(FATAL_ERROR "Project 'python_turtle' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'python_turtle' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/iamnotedible/Desktop/RR_turtle_reverse/ROS/src/python_turtle/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'python_turtle' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/iamnotedible/RR_turtle_example/ROS/src/python_turtle/${idir}'.  ${_report}")
     endif()
     _list_append_unique(python_turtle_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/iamnotedible/Desktop/RR_turtle_reverse/ROS/devel/lib;/home/iamnotedible/ros_ws/devel/lib;/home/iamnotedible/catkin_ws/devel_isolated/gazebo_robotraconteur_server_plugin_examples/lib;/home/iamnotedible/catkin_ws/devel_isolated/octomap_ros/lib;/home/iamnotedible/catkin_ws/devel_isolated/octomap_msgs/lib;/opt/ros/melodic/lib)
+    foreach(path /home/iamnotedible/RR_turtle_example/ROS/devel/lib;/home/iamnotedible/RR_turtle_example/ROS/devel/lib;/home/iamnotedible/catkin_ws/devel_isolated/gazebo_robotraconteur_server_plugin_examples/lib;/home/iamnotedible/catkin_ws/devel_isolated/octomap_ros/lib;/home/iamnotedible/catkin_ws/devel_isolated/octomap_msgs/lib;/home/iamnotedible/ros_ws/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

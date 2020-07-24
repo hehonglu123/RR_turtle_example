@@ -351,5 +351,6 @@ Temporary Items
 
 #Extra directories to ignore
 build/
+devel/
 generated_src/
 generated_src

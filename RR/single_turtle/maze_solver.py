@@ -165,25 +165,3 @@ def astar(maze, start_node, target_node):
         return path
     else:
         return None
-            
-# if __name__ == "__main__":
-   
-#     maze     = Maze.from_file("map/map1.txt")
-#     start_x  = 1
-#     start_y  = 1
-#     target_x = 11
-#     target_y = 2
-    
-#     start_node  = maze.get(start_x, start_y)
-#     target_node = maze.get(target_x, target_y)
-    
-#     if not start_node.walkable or not target_node.walkable:
-#         print "Start node or target node is not walkable. No solution exists."
-#         exit(1)
-        
-#     path = astar(maze, start_node, target_node)
-#     if path:
-#         maze.print_path(path)
-#     else:
-#         print "No path found"
-    

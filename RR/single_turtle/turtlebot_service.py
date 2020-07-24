@@ -13,7 +13,7 @@ class create_impl:
 
 		#RR property
 		self.turtle_pose=RRN.NewStructure("experimental.turtlebot_create.pose")
-		self.map=open("map/map1.txt",'r').read().splitlines()
+		self.map=open("map/map1.txt",'r').read().splitlines()	#read in map
 		self.color="None"
 
 	def drive(self,move_speed,turn_speed):            #Drive function, update new position, this is the one referred in definition

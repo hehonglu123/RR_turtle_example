@@ -5,14 +5,22 @@ import time
 import turtle
 import numpy as np
 
+def updatepose(turtle_obj,turtle_pose_wire):                    #set a new pose for turtlebot
+		if turtle_obj.color=="None":
+			t1.penup()
+		else:
+			t1.pencolor(turtle_obj.color)
+		if (turtle_pose_wire.TryGetInValue()[0]):
+			t1.setpos(turtle_pose_wire.InValue.x,turtle_pose_wire.InValue.y)
+			t1.seth(turtle_pose_wire.InValue.angle)
 
 def waypoint_following(turtle_obj,turtle_pose_wire,target_x,target_y):
 	desired_angle=np.degrees(np.arctan2(target_y-turtle_pose_wire.InValue.y,target_x-turtle_pose_wire.InValue.x))
 
 	turtle_obj.drive(0,desired_angle-turtle_pose_wire.InValue.angle)
-	updatepose()
+	updatepose(turtle_obj,turtle_pose_wire)
 	turtle_obj.drive(np.linalg.norm([target_x-turtle_pose_wire.InValue.x,target_y-turtle_pose_wire.InValue.y]),0)
-	updatepose()
+	updatepose(turtle_obj,turtle_pose_wire)
 
 with RR.ClientNodeSetup(argv=sys.argv):
 	url='rr+tcp://localhost:22222/?service=Turtlebot_Service'
@@ -36,18 +44,6 @@ with RR.ClientNodeSetup(argv=sys.argv):
 	t1=turtle.Turtle()
 	t1.shape("turtle")
 
-	def updatepose():                    #set a new pose for turtlebot
-		if turtle_obj.color=="None":
-			t1.penup()
-		else:
-			t1.pencolor(turtle_obj.color)
-		if (turtle_pose_wire.TryGetInValue()[0]):
-			t1.setpos(turtle_pose_wire.InValue.x,turtle_pose_wire.InValue.y)
-			t1.seth(turtle_pose_wire.InValue.angle)
-		
-
-	print("Running")
-
 	maze=Maze.solver_obj(turtle_obj.map)
 	start_x  = 1
 	start_y  = 1
@@ -64,13 +60,11 @@ with RR.ClientNodeSetup(argv=sys.argv):
 	turtle_pose.angle=0
 	turtle_obj.color="None"
 	turtle_obj.setpose(turtle_pose)
-	updatepose()
+	updatepose(turtle_obj,turtle_pose_wire)
 	turtle_obj.color="green"
 	
 
 	for p in path:
-		
-		# t1.goto(maze_obj.maze_to_screen(p.x,p.y))
 		screen_x,screen_y=maze_obj.maze_to_screen(p.x,p.y)
 		waypoint_following(turtle_obj,turtle_pose_wire,screen_x,screen_y)
 		

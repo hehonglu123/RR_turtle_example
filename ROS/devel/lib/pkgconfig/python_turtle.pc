@@ -1,8 +1,8 @@
-prefix=/home/iamnotedible/Desktop/RR_turtle_reverse/ROS/devel
+prefix=/home/iamnotedible/RR_turtle_example/ROS/devel
 
 Name: python_turtle
 Description: Description of python_turtle
 Version: 0.0.0
-Cflags: -I/home/iamnotedible/Desktop/RR_turtle_reverse/ROS/devel/include
+Cflags: -I/home/iamnotedible/RR_turtle_example/ROS/devel/include
 Libs: -L${prefix}/lib 
 Requires: 
