@@ -2,9 +2,9 @@
 ## Build ROS package:
 The package is already generated. To build it along with messages and services, 
 ```
-cd ~/python_turtle/ROS/
+cd ~/python_turtle_ROS_RR/ROS/
 catkin_make
-echo 'source ~/python_turtle/ROS/devel/setup.bash' >> ~/.bashrc 
+echo 'source ~/python_turtle_ROS_RR/ROS/devel/setup.bash' >> ~/.bashrc 
 ```
 It only needs to be done once, except there's modification on the service/message file.
 
