@@ -2,9 +2,9 @@
 ## Build ROS package:
 The package is already generated. To build it along with messages and services, 
 ```
-cd ~/python_turtle_trial/ROS/
+cd ~/python_turtle/ROS/
 catkin_make
-echo 'source ~/python_turtle_trial/ROS/devel/setup.bash' >> ~/.bashrc 
+echo 'source ~/python_turtle/ROS/devel/setup.bash' >> ~/.bashrc 
 ```
 It only needs to be done once, except there's modification on the service/message file.
 
@@ -33,7 +33,7 @@ python turtlebot_service.py
 ## ROS client:
 ### Keyboard Control:
 ```
-python turtlebot_keyboard.py
+python client_keyboard.py
 ```
 It should bring up a window with a turtle at center, and simply press the arrow key on your keyboard in the terminal to control the turtle.
 
