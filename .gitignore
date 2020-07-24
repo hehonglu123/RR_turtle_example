@@ -352,5 +352,6 @@ Temporary Items
 #Extra directories to ignore
 build/
 devel/
+.catkin_workspace
 generated_src/
 generated_src
