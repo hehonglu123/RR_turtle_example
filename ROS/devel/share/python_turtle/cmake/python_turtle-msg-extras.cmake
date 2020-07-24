@@ -1,2 +1,0 @@
-set(python_turtle_MESSAGE_FILES "/home/iamnotedible/RR_turtle_example/ROS/src/python_turtle/msg/turtle.msg;/home/iamnotedible/RR_turtle_example/ROS/src/python_turtle/msg/turtle_array.msg")
-set(python_turtle_SERVICE_FILES "/home/iamnotedible/RR_turtle_example/ROS/src/python_turtle/srv/addturtle.srv;/home/iamnotedible/RR_turtle_example/ROS/src/python_turtle/srv/removeturtle.srv;/home/iamnotedible/RR_turtle_example/ROS/src/python_turtle/srv/setcolor.srv;/home/iamnotedible/RR_turtle_example/ROS/src/python_turtle/srv/setpose.srv")
