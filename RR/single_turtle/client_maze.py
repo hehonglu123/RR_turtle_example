@@ -22,49 +22,50 @@ def waypoint_following(turtle_obj,turtle_pose_wire,target_x,target_y):
 	turtle_obj.drive(np.linalg.norm([target_x-turtle_pose_wire.InValue.x,target_y-turtle_pose_wire.InValue.y]),0)
 	updatepose(turtle_obj,turtle_pose_wire)
 
-with RR.ClientNodeSetup(argv=sys.argv):
-	url='rr+tcp://localhost:22222/?service=Turtlebot_Service'
-	#take url from command line
-	if (len(sys.argv)>=2):
-		url=sys.argv[1]
-	sub=RRN.SubscribeService(url)
-	while True:
-	   try:
-		   turtle_obj = sub.GetDefaultClient()
-		   turtle_pose_wire=sub.SubscribeWire("turtle_pose_wire")
-		   
-		   break
-	   except RR.ConnectionException:
-		   time.sleep(0.1)
-
-	maze_obj=Turtle_Maze()
-	maze_obj.setup_maze(turtle_obj.map)
 
 
-	t1=turtle.Turtle()
-	t1.shape("turtle")
+url='rr+tcp://localhost:22222/?service=Turtlebot_Service'
+#take url from command line
+if (len(sys.argv)>=2):
+	url=sys.argv[1]
+sub=RRN.SubscribeService(url)
+while True:
+   try:
+	   turtle_obj = sub.GetDefaultClient()
+	   turtle_pose_wire=sub.SubscribeWire("turtle_pose_wire")
+	   
+	   break
+   except RR.ConnectionException:
+	   time.sleep(0.1)
 
-	maze=Maze.solver_obj(turtle_obj.map)
-	start_x  = 1
-	start_y  = 1
-	target_x = 23
-	target_y = 22
+maze_obj=Turtle_Maze()
+maze_obj.setup_maze(turtle_obj.map)
 
-	start_node  = maze.get(start_x, start_y)
-	target_node = maze.get(target_x, target_y)
-	path = astar(maze, start_node, target_node)
 
-	RRN.RegisterServiceTypeFromFile("experimental.turtlebot_create") 
-	turtle_pose=RRN.NewStructure("experimental.turtlebot_create.pose")
-	turtle_pose.x,turtle_pose.y=maze_obj.maze_to_screen(start_x, start_y)
-	turtle_pose.angle=0
-	turtle_obj.color="None"
-	turtle_obj.setpose(turtle_pose)
-	updatepose(turtle_obj,turtle_pose_wire)
-	turtle_obj.color="green"
-	
+t1=turtle.Turtle()
+t1.shape("turtle")
 
-	for p in path:
-		screen_x,screen_y=maze_obj.maze_to_screen(p.x,p.y)
-		waypoint_following(turtle_obj,turtle_pose_wire,screen_x,screen_y)
+maze=Maze.solver_obj(turtle_obj.map)
+start_x  = 1
+start_y  = 1
+target_x = 23
+target_y = 22
+
+start_node  = maze.get(start_x, start_y)
+target_node = maze.get(target_x, target_y)
+path = astar(maze, start_node, target_node)
+
+RRN.RegisterServiceTypeFromFile("experimental.turtlebot_create") 
+turtle_pose=RRN.NewStructure("experimental.turtlebot_create.pose")
+turtle_pose.x,turtle_pose.y=maze_obj.maze_to_screen(start_x, start_y)
+turtle_pose.angle=0
+turtle_obj.color="None"
+turtle_obj.setpose(turtle_pose)
+updatepose(turtle_obj,turtle_pose_wire)
+turtle_obj.color="green"
+
+
+for p in path:
+	screen_x,screen_y=maze_obj.maze_to_screen(p.x,p.y)
+	waypoint_following(turtle_obj,turtle_pose_wire,screen_x,screen_y)
 		
