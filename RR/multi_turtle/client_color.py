@@ -12,16 +12,23 @@ turtle_display_list=[]
 #initialize display
 screen = turtle.Screen()
 screen.bgcolor("lightblue")
-def update(obj,turtle_list):                    #set a new pose for turtlebot
-    global turtle_display_list, my_turtle
 
-    if obj.turtle_change==True:
+turtle_change=False
+#event callback
+def turtle_changed():
+    global turtle_change
+    turtle_change=True
+
+def update(turtle_list):                    #set a new pose for turtlebot
+    global turtle_display_list, my_turtle, turtle_change
+
+    if turtle_change==True:
         #clear turtle_display_list
         turtle_display_list=[]
         #clear screen
         screen.clearscreen()
         screen.bgcolor("lightblue")
-        obj.turtle_change=False
+        turtle_change=False
         #update turtles on screen
         for i in range(len(turtle_list)):
             turtle_display_list.append(turtle.Turtle())
@@ -62,6 +69,9 @@ while True:
     except RR.ConnectionException:
         time.sleep(0.1)
 
+#event setup
+obj.turtle_change+=turtle_changed
+
 #create RR turtle struct, add my turtle to the turtle list
 my_turtle=turtle_obj.add_turtle("turtle_webcam")
 
@@ -75,7 +85,7 @@ while True:
         image_size=cam_obj.image.width*cam_obj.image.height
         image_dimension=np.array([cam_obj.image.height,cam_obj.image.width])
 
-        update(turtle_obj,turtles_wire.InValue)                            #updatepose based on location of each turtle
+        update(turtles_wire.InValue)                            #updatepose based on location of each turtle
 
         # 1) filter on RED component
         image_red = cv2.inRange(image, np.array([5,5,200]),np.array([200,200,255]))

@@ -15,13 +15,25 @@ class create_impl:
 		self.turtle=RRN.NewStructure("experimental.turtlebot_create.turtle")
 		self.turtle.turtle_pose=RRN.NewStructure("experimental.turtlebot_create.pose")
 		self.turtles=[]
-		self.turtle_change=True
 		self.distance_report_inst=RRN.NewStructure("experimental.turtlebot_create.distance")
-		# self.turtles_wire.OutValue=self.turtles
+		#event
+		self.turtle_change=RR.EventHook()
 
 		#distance checking 
 		self._lock=threading.RLock()
 		self._running=False
+
+	#turtle_change pipe member property getter and setter
+	@property
+	def turtle_change(self):
+		return self._turtlechange
+	@turtle_change.setter
+	def turtle_change(self,value):
+		self._turtlechange=value
+		#Create the PipeBroadcaster and set backlog to 3 so packets
+		#will be dropped if the transport is overloaded
+		self._turtlechange_broadcaster=RR.PipeBroadcaster(value,1)
+
 
 	def drive(self,turtle_obj,move_speed,turn_speed):            #Drive function, update new position, this is the one referred in definition
 		# with self._lock:
@@ -40,22 +52,30 @@ class create_impl:
 			self.turtles_wire.OutValue=self.turtles
 
 	def add_turtle(self,turtle_name):					#add new turtle at origin
-		with self._lock:
+		# with self._lock:
 			self.turtle.name=turtle_name
 			self.turtle.index=len(self.turtles)
-			self.turtle_change=True
 			self.turtles.append(copy.deepcopy(self.turtle))
 			self.turtles_wire.OutValue=self.turtles
+
+			#pipe send turtle_change signal
+			self.turtle_change.fire()
 			return self.turtle
 		
 	def remove_turtle(self,turtle_obj):
-		with self._lock:
-			self.turtle_change=True
-			del self.turtles[turtle_obj.index]
-			#update turtles index
-			for i in range(len(self.turtles)):
-				self.turtles.index=i
-			self.turtles_wire.OutValue=self.turtles
+		# with self._lock:
+			try:
+				del self.turtles[turtle_obj.index]
+				#update turtles index
+				for i in range(len(self.turtles)):
+					self.turtles.index=i
+				self.turtles_wire.OutValue=self.turtles
+				#pipe send turtle_change signal
+				self.turtle_change.fire()
+			except:
+				print(turtle_obj.index)
+				print(len(self.turtles))
+				traceback.print_exc()
 
 	def start(self):
 		self._running=True
@@ -86,6 +106,8 @@ class create_impl:
 				except:
 					traceback.print_exc()
 
+	
+
 		
 		
 
@@ -100,6 +122,7 @@ if __name__ == '__main__':
 		create_inst.start()						#start distance checking service
 		#Register the service with definition and object
 		RRN.RegisterService("Turtlebot_Service","experimental.turtlebot_create.turtlesim",create_inst)
+
 
 		#Wait for program exit to quit
 		input("Press enter to quit")

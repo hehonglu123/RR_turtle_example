@@ -10,16 +10,23 @@ turtle_display_list=[]
 #initialize display
 screen = turtle.Screen()
 screen.bgcolor("lightblue")
-def update(obj,turtle_list):                    #set a new pose for turtlebot
-    global turtle_display_list, my_turtle
 
-    if obj.turtle_change==True:
+turtle_change=False
+#event callback
+def turtle_changed():
+    global turtle_change
+    turtle_change=True
+
+def update(turtle_list):                    #set a new pose for turtlebot
+    global turtle_display_list, my_turtle, turtle_change
+
+    if turtle_change==True:
         #clear turtle_display_list
         turtle_display_list=[]
         #clear screen
         screen.clearscreen()
         screen.bgcolor("lightblue")
-        obj.turtle_change=False
+        turtle_change=False
         #update turtles on screen
         for i in range(len(turtle_list)):
             turtle_display_list.append(turtle.Turtle())
@@ -53,6 +60,8 @@ while True:
    except RR.ConnectionException:
        time.sleep(0.1)
 
+#event setup
+obj.turtle_change+=turtle_changed
 
 #create RR turtle struct, add my turtle to the turtle list
 my_turtle=obj.add_turtle("turtle-circle")
@@ -60,7 +69,7 @@ obj.setcolor(my_turtle,"green")
 while True:
 	try:
 		obj.drive(my_turtle,10,10)
-		update(obj,turtles_wire.InValue)
+		update(turtles_wire.InValue)
 	except:
 		traceback.print_exc()
 		#remove my turtle

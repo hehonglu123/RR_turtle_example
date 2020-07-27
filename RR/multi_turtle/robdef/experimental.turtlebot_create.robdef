@@ -20,15 +20,16 @@ struct distance
 end
 
 object turtlesim
+	event turtle_change()
 	function void drive(turtle turtle_obj, double move_speed, double turn_speed)
 	property turtle{list} turtles
 	wire turtle{list} turtles_wire [readonly]
-	property bool turtle_change
 	function turtle add_turtle(string turtle_name)
 	function void remove_turtle(turtle turtle_obj)
 	function void setpose(turtle turtle_obj,pose desire_pose)
 	function void setcolor(turtle turtle_obj, string color)
 	property string{list} map
 	wire distance{list} distance_report_wire [readonly]
+	
 
 end object
