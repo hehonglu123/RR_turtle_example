@@ -11,9 +11,20 @@ oldflags = fcntl.fcntl(fd, fcntl.F_GETFL)
 fcntl.fcntl(fd, fcntl.F_SETFL, oldflags | os.O_NONBLOCK)
 
 
-#RR Client Setup
 url='rr+tcp://localhost:22222/?service=Turtlebot_Service'
-obj=RRN.ConnectService(url)
+#take url from command line
+if (len(sys.argv)>=2):
+    url=sys.argv[1]
+sub=RRN.SubscribeService(url)
+while True:
+   try:
+       obj = sub.GetDefaultClient()
+       turtle_pose_wire=sub.SubscribeWire("turtle_pose_wire")
+       distance_report_wire=sub.SubscribeWire("distance_report_wire")
+
+       break
+   except RR.ConnectionException:
+       time.sleep(0.1)
 
 #add my turtle to the turtle list
 my_turtlename="turtle1"
@@ -37,7 +48,8 @@ try:
                 obj.drive("turtle1",0,10)            ####Drive left
             if "q" in c:
                 break
-
+            for i in range(len(distance_report_wire.InValue))
+            print(distance_report_wire[0].  )
         except IOError: pass
 #finish reading keyboard input
 finally:
