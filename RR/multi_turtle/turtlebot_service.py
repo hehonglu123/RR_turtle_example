@@ -65,7 +65,8 @@ class create_impl:
 	def remove_turtle(self,turtle_obj):
 		# with self._lock:
 			try:
-				del self.turtles[turtle_obj.index]
+				self.turtles.pop(turtle_obj.index)
+				# del self.turtles[turtle_obj.index]
 				#update turtles index
 				for i in range(len(self.turtles)):
 					self.turtles.index=i
@@ -73,8 +74,6 @@ class create_impl:
 				#pipe send turtle_change signal
 				self.turtle_change.fire()
 			except:
-				print(turtle_obj.index)
-				print(len(self.turtles))
 				traceback.print_exc()
 
 	def start(self):
@@ -94,10 +93,10 @@ class create_impl:
 					self.distance_report=[copy.deepcopy(self.distance_report_inst) for i in range(len(self.turtles))]
 					for i in range(len(self.turtles)):
 						self.distance_report[i].name=self.turtles[i].name
-						self.distance_report[i].d=999
 						for j in range(i+1,len(self.turtles)):
 							d=np.linalg.norm([self.turtles[i].turtle_pose.x-self.turtles[j].turtle_pose.x,self.turtles[i].turtle_pose.y-self.turtles[j].turtle_pose.y])
-							if self.distance_report[i].d>d:
+							#update minimal distance if not set or found smaller ones
+							if self.distance_report[i].d>d or self.distance_report[i].d==0:
 								self.distance_report[i].d=d
 								self.distance_report[i].direction=[self.turtles[j].turtle_pose.x-self.turtles[i].turtle_pose.x,self.turtles[j].turtle_pose.y-self.turtles[i].turtle_pose.y]
 								self.distance_report[j].d=d

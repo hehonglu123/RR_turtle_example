@@ -31,19 +31,21 @@ def update(turtle_list):                    #set a new pose for turtlebot
         for i in range(len(turtle_list)):
             turtle_display_list.append(turtle.Turtle())
             turtle_display_list[i].shape("turtle")
+            turtle_display_list[i].penup()
             #update index
             if (turtle_list[i].name==my_turtle.name):
                 my_turtle.index=turtle_list[i].index
 
     #update turtles pose in display
     for i in range(len(turtle_list)):
+        turtle_display_list[i].setpos(turtle_list[i].turtle_pose.x,turtle_list[i].turtle_pose.y)
+        turtle_display_list[i].seth(turtle_list[i].turtle_pose.angle)
         if turtle_list[i].color=="None":
             turtle_display_list[i].penup()
         else:
             turtle_display_list[i].pendown()
             turtle_display_list[i].pencolor(turtle_list[i].color)
-        turtle_display_list[i].setpos(turtle_list[i].turtle_pose.x,turtle_list[i].turtle_pose.y)
-        turtle_display_list[i].seth(turtle_list[i].turtle_pose.angle)
+        
 
 
 

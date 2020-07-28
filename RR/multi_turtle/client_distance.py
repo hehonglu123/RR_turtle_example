@@ -1,6 +1,6 @@
+import termios, fcntl, sys, os
 import turtle                           #import python turtle library
 import time
-import sys
 import traceback
 from RobotRaconteur.Client import *     #import RR client library
 
@@ -20,7 +20,7 @@ def turtle_changed():
 def update(turtle_list):                    #set a new pose for turtlebot
     global turtle_display_list, my_turtle, turtle_change
 
-    if turtle_change==True:
+    if turtle_change:
         #clear turtle_display_list
         turtle_display_list=[]
         #clear screen
@@ -48,6 +48,17 @@ def update(turtle_list):                    #set a new pose for turtlebot
         
 
 
+
+#keyboard reading settings
+fd = sys.stdin.fileno()
+oldterm = termios.tcgetattr(fd)
+newattr = termios.tcgetattr(fd)
+newattr[3] = newattr[3] & ~termios.ICANON & ~termios.ECHO
+termios.tcsetattr(fd, termios.TCSANOW, newattr)
+oldflags = fcntl.fcntl(fd, fcntl.F_GETFL)
+fcntl.fcntl(fd, fcntl.F_SETFL, oldflags | os.O_NONBLOCK)
+
+
 #RR client setup, connect to turtle service
 url='rr+tcp://localhost:22222/?service=Turtlebot_Service'
 #take url from command line
@@ -58,6 +69,7 @@ while True:
    try:
        obj = sub.GetDefaultClient()
        turtles_wire=sub.SubscribeWire("turtles_wire")
+       distance_report_wire=sub.SubscribeWire("distance_report_wire")
        break
    except RR.ConnectionException:
        time.sleep(0.1)
@@ -66,14 +78,35 @@ while True:
 obj.turtle_change+=turtle_changed
 
 #create RR turtle struct, add my turtle to the turtle list
-my_turtle=obj.add_turtle("turtle-circle")
-obj.setcolor(my_turtle,"green")
-while True:
-	try:
-		obj.drive(my_turtle,10,10)
-		update(turtles_wire.InValue)
-	except:
-		traceback.print_exc()
-		#remove my turtle
-		obj.remove_turtle(my_turtle)    
+my_turtle=obj.add_turtle("turtle-1")
 
+
+print("Running")
+print("Press Arrow Key to Control Turtle")
+print("Press q to quit")
+try:
+    while True:
+        try:
+            #update pose
+            update(turtles_wire.InValue)
+            c = sys.stdin.read()
+            if "\x1b[A" in c:
+                obj.drive(my_turtle,10,0)            ####Drive forward
+            if "\x1b[B" in c:
+                obj.drive(my_turtle,-10,0)           ####Drive backward               
+            if "\x1b[C" in c:
+                obj.drive(my_turtle,0,-10)           ####Drive right
+            if "\x1b[D" in c:
+                obj.drive(my_turtle,0,10)            ####Drive left
+            if "q" in c:
+                break
+            print(distance_report_wire.InValue[my_turtle.index].d)
+            
+        except IOError: pass
+#finish reading keyboard input
+finally:
+    termios.tcsetattr(fd, termios.TCSAFLUSH, oldterm)
+    fcntl.fcntl(fd, fcntl.F_SETFL, oldflags)
+
+#remove my turtle
+obj.remove_turtle(my_turtle)    
