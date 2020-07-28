@@ -5,8 +5,7 @@ import traceback
 from RobotRaconteur.Client import *     #import RR client library
 
 #initialize global variables
-my_turtle=None
-turtle_display_list=[]
+turtle_display_dict={}
 #initialize display
 screen = turtle.Screen()
 screen.bgcolor("lightblue")
@@ -17,34 +16,31 @@ def turtle_changed():
     global turtle_change
     turtle_change=True
 
-def update(turtle_list):                    #set a new pose for turtlebot
-    global turtle_display_list, my_turtle, turtle_change
+def update(turtle_dict):                    #set a new pose for turtlebot
+    global turtle_display_dict, my_turtle, turtle_change
 
     if turtle_change==True:
-        #clear turtle_display_list
-        turtle_display_list=[]
+        #clear turtle_display_dict
+        turtle_display_dict={}
         #clear screen
         screen.clearscreen()
         screen.bgcolor("lightblue")
         turtle_change=False
         #update turtles on screen
-        for i in range(len(turtle_list)):
-            turtle_display_list.append(turtle.Turtle())
-            turtle_display_list[i].shape("turtle")
-            turtle_display_list[i].penup()
-            #update index
-            if (turtle_list[i].name==my_turtle.name):
-                my_turtle.index=turtle_list[i].index
+        for key, value in turtle_dict.items():
+            turtle_display_dict[key]=turtle.Turtle()
+            turtle_display_dict[key].shape("turtle")
+            turtle_display_dict[key].penup()
 
     #update turtles pose in display
-    for i in range(len(turtle_list)):
-        turtle_display_list[i].setpos(turtle_list[i].turtle_pose.x,turtle_list[i].turtle_pose.y)
-        turtle_display_list[i].seth(turtle_list[i].turtle_pose.angle)
-        if turtle_list[i].color=="None":
-            turtle_display_list[i].penup()
+    for key, value in turtle_dict.items():
+        turtle_display_dict[key].setpos(value.turtle_pose.x,value.turtle_pose.y)
+        turtle_display_dict[key].seth(value.turtle_pose.angle)
+        if value.color=="None":
+            turtle_display_dict[key].penup()
         else:
-            turtle_display_list[i].pendown()
-            turtle_display_list[i].pencolor(turtle_list[i].color)
+            turtle_display_dict[key].pendown()
+            turtle_display_dict[key].pencolor(value.color)
         
 
 
@@ -66,14 +62,15 @@ while True:
 obj.turtle_change+=turtle_changed
 
 #create RR turtle struct, add my turtle to the turtle list
-my_turtle=obj.add_turtle("turtle-circle")
-obj.setcolor(my_turtle,"green")
+my_turtlename="turtle-circle"
+obj.add_turtle(my_turtlename)
+obj.setcolor(my_turtlename,"green")
 while True:
 	try:
-		obj.drive(my_turtle,10,10)
+		obj.drive(my_turtlename,10,10)
 		update(turtles_wire.InValue)
 	except:
 		traceback.print_exc()
 		#remove my turtle
-		obj.remove_turtle(my_turtle)    
+		obj.remove_turtle(my_turtlename)    
 

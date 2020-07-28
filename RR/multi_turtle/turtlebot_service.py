@@ -14,7 +14,7 @@ class create_impl:
 		#RR property
 		self.turtle=RRN.NewStructure("experimental.turtlebot_create.turtle")
 		self.turtle.turtle_pose=RRN.NewStructure("experimental.turtlebot_create.pose")
-		self.turtles=[]
+		self.turtles={}
 		self.distance_report_inst=RRN.NewStructure("experimental.turtlebot_create.distance")
 		#event
 		self.turtle_change=RR.EventHook()
@@ -23,50 +23,39 @@ class create_impl:
 		self._lock=threading.RLock()
 		self._running=False
 
-	#turtle_change pipe member property getter and setter
-	@property
-	def turtle_change(self):
-		return self._turtlechange
-	@turtle_change.setter
-	def turtle_change(self,value):
-		self._turtlechange=value
-		#Create the PipeBroadcaster and set backlog to 3 so packets
-		#will be dropped if the transport is overloaded
-		self._turtlechange_broadcaster=RR.PipeBroadcaster(value,1)
 
-
-	def drive(self,turtle_obj,move_speed,turn_speed):            #Drive function, update new position, this is the one referred in definition
+	def drive(self,turtle_name,move_speed,turn_speed):            #Drive function, update new position, this is the one referred in definition
 		# with self._lock:
-			self.turtles[turtle_obj.index].turtle_pose.x+=move_speed*np.cos(np.radians(self.turtles[turtle_obj.index].turtle_pose.angle))
-			self.turtles[turtle_obj.index].turtle_pose.y+=move_speed*np.sin(np.radians(self.turtles[turtle_obj.index].turtle_pose.angle))
-			self.turtles[turtle_obj.index].turtle_pose.angle+=turn_speed
+			self.turtles[turtle_name].turtle_pose.x+=move_speed*np.cos(np.radians(self.turtles[turtle_name].turtle_pose.angle))
+			self.turtles[turtle_name].turtle_pose.y+=move_speed*np.sin(np.radians(self.turtles[turtle_name].turtle_pose.angle))
+			self.turtles[turtle_name].turtle_pose.angle+=turn_speed
 			self.turtles_wire.OutValue=self.turtles
 
-	def setpose(self,turtle_obj,desire_pose):
+	def setpose(self,turtle_name,desire_pose):
 		with self._lock:
-			self.turtles[turtle_obj.index].turtle_pose=desire_pose
+			self.turtles[turtle_name].turtle_pose=desire_pose
 			self.turtles_wire.OutValue=self.turtles
-	def setcolor(self,turtle_obj,color):
+	def setcolor(self,turtle_name,color):
 		with self._lock:
-			self.turtles[turtle_obj.index].color=color
+			self.turtles[turtle_name].color=color
 			self.turtles_wire.OutValue=self.turtles
 
 	def add_turtle(self,turtle_name):					#add new turtle at origin
 		# with self._lock:
-			self.turtle.name=turtle_name
-			self.turtle.index=len(self.turtles)
-			self.turtles.append(copy.deepcopy(self.turtle))
+		try:
+			self.turtles[turtle_name]=copy.deepcopy(self.turtle)
 			self.turtles_wire.OutValue=self.turtles
 
 			#pipe send turtle_change signal
 			self.turtle_change.fire()
-			return self.turtle
+
+		except:
+			traceback.print_exc()
 		
-	def remove_turtle(self,turtle_obj):
+	def remove_turtle(self,turtle_name):
 		# with self._lock:
 			try:
-				self.turtles.pop(turtle_obj.index)
-				# del self.turtles[turtle_obj.index]
+				del self.turtles[turtle_name]
 				#update turtles index
 				for i in range(len(self.turtles)):
 					self.turtles.index=i
@@ -89,19 +78,21 @@ class create_impl:
 		while self._running:
 			with self._lock:
 				try:
-
-					self.distance_report=[copy.deepcopy(self.distance_report_inst) for i in range(len(self.turtles))]
-					for i in range(len(self.turtles)):
-						self.distance_report[i].name=self.turtles[i].name
-						for j in range(i+1,len(self.turtles)):
-							d=np.linalg.norm([self.turtles[i].turtle_pose.x-self.turtles[j].turtle_pose.x,self.turtles[i].turtle_pose.y-self.turtles[j].turtle_pose.y])
-							#update minimal distance if not set or found smaller ones
-							if self.distance_report[i].d>d or self.distance_report[i].d==0:
-								self.distance_report[i].d=d
-								self.distance_report[i].direction=[self.turtles[j].turtle_pose.x-self.turtles[i].turtle_pose.x,self.turtles[j].turtle_pose.y-self.turtles[i].turtle_pose.y]
-								self.distance_report[j].d=d
-								self.distance_report[j].direction=[self.turtles[i].turtle_pose.x-self.turtles[j].turtle_pose.x,self.turtles[i].turtle_pose.y-self.turtles[j].turtle_pose.y]
+					self.distance_report={}
+					for key, value in self.turtles.items():
+						self.distance_report[key]=copy.deepcopy(self.distance_report_inst)
+						for key1, value1 in self.turtles.items():
+							if key!=key1:
+								direction=[value1.turtle_pose.x-value.turtle_pose.x,value1.turtle_pose.y-value.turtle_pose.y]
+								d=np.linalg.norm(direction)
+								#update minimal distance if not set or found smaller ones
+								if self.distance_report[key].d>d or self.distance_report[key].d==0:
+									self.distance_report[key].d=d
+									self.distance_report[key].direction=direction
+									
 					self.distance_report_wire.OutValue=self.distance_report
+				except AttributeError:
+					pass
 				except:
 					traceback.print_exc()
 
