@@ -106,4 +106,4 @@ finally:
     fcntl.fcntl(fd, fcntl.F_SETFL, oldflags)
 
 #remove my turtle
-obj.remove_turtle(my_turtle)    
+obj.remove_turtle(my_turtlename)    
