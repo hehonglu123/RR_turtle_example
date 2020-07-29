@@ -99,6 +99,7 @@ try:
             print(distance_report_wire.InValue[my_turtlename].d)
             
         except IOError: pass
+        except TypeError: pass
 #finish reading keyboard input
 finally:
     termios.tcsetattr(fd, termios.TCSAFLUSH, oldterm)

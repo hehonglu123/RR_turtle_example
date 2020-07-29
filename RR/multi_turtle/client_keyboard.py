@@ -97,6 +97,7 @@ try:
                 break
             
         except IOError: pass
+        except TypeError: pass
 #finish reading keyboard input
 finally:
     termios.tcsetattr(fd, termios.TCSAFLUSH, oldterm)
